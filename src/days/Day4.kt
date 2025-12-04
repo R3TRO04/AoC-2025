@@ -71,7 +71,6 @@ object Day4 : AoCDay {
         fun inBounds(r: Int, c: Int): Boolean =
             r in 0 until height && c in 0 until width
 
-        // 1) Initial neighbor counts for each roll of paper
         for (r in 0 until height) {
             for (c in 0 until width) {
                 if (grid[r][c] != '@') continue
@@ -87,7 +86,6 @@ object Day4 : AoCDay {
             }
         }
 
-
         val queue = ArrayDeque<Pair<Int, Int>>()
         for (r in 0 until height) {
             for (c in 0 until width) {
@@ -99,16 +97,13 @@ object Day4 : AoCDay {
 
         var removed = 0
 
-        // 3) Peel off all rolls that ever become accessible
         while (queue.isNotEmpty()) {
             val (r, c) = queue.removeFirst()
-            if (grid[r][c] != '@') continue // might have been removed already
+            if (grid[r][c] != '@') continue
 
-            // Remove this roll
             grid[r][c] = '.'
             removed++
 
-            // Update neighbors
             for ((dr, dc) in directions) {
                 val nr = r + dr
                 val nc = c + dc
