@@ -7,7 +7,7 @@ import kotlinx.datetime.LocalDate
 object Day1 : AoCDay {
     override val day: LocalDate = day(1)
 
-    private enum class Direction constructor(directionKey: Char) {
+    private enum class Direction(directionKey: Char) {
         LEFT('L'),
         RIGHT('R');
 
@@ -24,10 +24,10 @@ object Day1 : AoCDay {
         var result = 0
         var safeDail = Dail()
         input.lines().forEach { line ->
-            safeDail = when (val moveDirection = Direction.ofChar(line.first())) {
-                Direction.RIGHT -> safeDail.turn(line.substring(1).toInt(), moveDirection)
-                Direction.LEFT -> safeDail.turn(line.substring(1).toInt(), moveDirection)
-            }
+            val direction = Direction.ofChar(line.first())
+            val steps = line.substring(1).trim().toInt()
+
+            safeDail = safeDail.turn(steps, direction)
             if (safeDail.current == 0) result += 1
         }
 
@@ -37,58 +37,61 @@ object Day1 : AoCDay {
     private data class Dail(
         private val min: Int = 0,
         val current: Int = 50,
-        private val max: Int = 99,
-        var turnover: Int = 0
+        private val max: Int = 99
     ) {
-
-
         fun turn(count: Int, direction: Direction): Dail {
-            return when(direction) {
-                Direction.LEFT -> {
-                    if(current - count < min) {
-                        var foo = current
-                        while(foo - count < min) {
-                            foo += 99
-                            if(foo - count == 0) turnover += 1
-                            turnover += 1
-                        }
-                        this.copy(current = (current - count) % 100, turnover = turnover)
-                    }
-                    else {
-                        if(current - count == 0) turnover += 1
-                        this.copy(current = current - count, turnover = turnover)
-                    }
-                }
+            val rangeSize = max - min + 1
 
+            val delta = when (direction) {
+                Direction.LEFT  -> -count
+                Direction.RIGHT ->  count
+            }
+
+            val raw = current + delta
+            val wrapped = ((raw - min) % rangeSize + rangeSize) % rangeSize + min
+
+            return copy(current = wrapped)
+        }
+
+        fun countZerosDuringTurn(count: Int, direction: Direction): Long {
+            if (count <= 0) return 0L
+
+            val rangeSize = max - min + 1
+            val start = current
+
+            val firstK = when (direction) {
                 Direction.RIGHT -> {
-                    if(current + count > max) {
-                        var foo = current
-                        while(foo + count > max) {
-                            foo -= 99
-                            if(foo + count == 0) turnover += 1
-                            turnover += 1
-                        }
-                        this.copy(current = (current + count) % 100, turnover = turnover)
-                    }
-                    else {
-                        if(current + count == 0) turnover += 1
-                        this.copy(current = current + count, turnover = turnover)
-                    }
+                    val r = (rangeSize - (start % rangeSize)) % rangeSize
+                    if (r == 0) rangeSize else r
+                }
+                Direction.LEFT -> {
+                    val r = start % rangeSize
+                    if (r == 0) rangeSize else r
                 }
             }
+
+            if (firstK > count) return 0L
+
+
+            return 1L + (count - firstK) / rangeSize
         }
     }
 
 
     override fun executePart2(input: String): Any {
-        var safeDail = Dail()
-        input.lines().forEach { line ->
-            safeDail = when (val moveDirection = Direction.ofChar(line.first())) {
-                Direction.RIGHT -> safeDail.turn(line.substring(1).toInt(), moveDirection)
-                Direction.LEFT -> safeDail.turn(line.substring(1).toInt(), moveDirection)
-            }
-        }
+        var zeroHits = 0L
+        var safeDial = Dail() // starts at 50
 
-        return safeDail.turnover
+        input.lineSequence()
+            .filter { it.isNotBlank() }
+            .forEach { line ->
+                val direction = Direction.ofChar(line.first())
+                val steps = line.substring(1).trim().toInt()
+
+                zeroHits += safeDial.countZerosDuringTurn(steps, direction)
+                safeDial = safeDial.turn(steps, direction)
+            }
+
+        return zeroHits
     }
 }
