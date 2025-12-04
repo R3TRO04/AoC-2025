@@ -1,8 +1,8 @@
 ![](https://img.shields.io/badge/Kotlin-2.3.0.rc.2-7F52FF?logo=kotlin)
 ![](https://img.shields.io/badge/Gradle-9.3.0.rc-02303A?logo=gradle)
 ![](https://img.shields.io/badge/day%20📆-3-red)
-![](https://img.shields.io/badge/stars%20⭐-2-gold)
-![](https://img.shields.io/badge/days%20completed%20✅-1-58CC02)
+![](https://img.shields.io/badge/stars%20⭐-8-gold)
+![](https://img.shields.io/badge/days%20completed%20✅-4-58CC02)
 
 # AoC-2025
 
@@ -12,8 +12,9 @@ taken from my [AoC-2024 repository](https://github.com/R3TRO04/AoC-2024) from la
 ### Direct links:
 
 - [Day 1](src/days/Day1.kt): solved, 2 stars ([input](input/day1.txt))
-- ~~[Day 2](src/days/Day2.kt): solved, 2 stars ([input](input/day2.txt))~~
-- ~~[Day 3](src/days/Day3.kt): solved, 2 stars ([input](input/day3.txt))~~
+- [Day 2](src/days/Day2.kt): solved, 2 stars ([input](input/day2.txt))
+- [Day 3](src/days/Day3.kt): solved, 2 stars ([input](input/day3.txt))
+- [Day 4](src/days/Day4.kt): solved, 2 stars ([input](input/day4.txt))
 
 
 ### Contents:
