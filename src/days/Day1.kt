@@ -80,7 +80,7 @@ object Day1 : AoCDay {
 
     override fun executePart2(input: String): Any {
         var zeroHits = 0L
-        var safeDial = Dail() // starts at 50
+        var safeDial = Dail()
 
         input.lineSequence()
             .filter { it.isNotBlank() }
