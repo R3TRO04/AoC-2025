@@ -3,6 +3,6 @@ package com.r3tro04
 import com.r3tro04.structure.AoC
 
 fun main() {
-    println(AoC.executeSimple(4).formatResult())
+    println(AoC.executeSimple(5).formatResult())
     AoC.printAllTimed(100, 10)
 }
